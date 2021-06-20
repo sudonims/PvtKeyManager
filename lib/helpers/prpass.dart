@@ -429,43 +429,49 @@ String add(String a, String b) {
   return ans;
 }
 
-String generatePassword(String pass, String lucky) {
-  var luck = int.parse(lucky);
-  // print("luck" + luck.toString());
-  // print("Pass" + pass);
-  var luck1 = luck % 5;
-  String a;
-  String ans = "";
-  for (int i = 0; i < pass.length; i++) {
-    a = pass[i];
-    if (defLt.contains(a)) {
-      ans += data[luck1][a];
-    } else {
-      ans += a;
+class PRPass {
+  PRPass({required this.secret, required this.lucky});
+  final String secret;
+  final String lucky;
+
+  String generatePassword() {
+    var luck = int.parse(this.lucky);
+    // print("luck" + luck.toString());
+    // print("Pass" + this.secret);
+    var luck1 = luck % 5;
+    String a;
+    String ans = "";
+    for (int i = 0; i < this.secret.length; i++) {
+      a = this.secret[i];
+      if (defLt.contains(a)) {
+        ans += data[luck1][a];
+      } else {
+        ans += a;
+      }
     }
+    var ans1 = wrap(ans);
+    luck += 100;
+    luck %= 72;
+    var ansFinal = sample[luck];
+    for (int i = 1; i < 12; i++) {
+      ansFinal += sample[ansFinal[i - 1].codeUnitAt(0) % 72];
+    }
+    for (int i = 0; i < ans1.length; i++) {
+      ansFinal = add(ansFinal, ans1[i]);
+    }
+    luck += this.secret.length + ans1.length * this.secret.length;
+    luck %= 72;
+    String char1 = sample[(luck % 26) + 26] + sample[((luck + 111) % 10) + 52];
+    String char3 = sample[((luck + 222) % 10) + 62] + sample[(luck + 300) % 26];
+    luck = (this.secret.length * luck) % ansFinal.length;
+    ansFinal = ansFinal.substring(0, luck) +
+        char1 +
+        ansFinal.substring(luck, ansFinal.length);
+    luck += this.secret.length + ans1.length;
+    luck %= ansFinal.length;
+    ansFinal = ansFinal.substring(0, luck) +
+        char3 +
+        ansFinal.substring(luck, ansFinal.length);
+    return ansFinal;
   }
-  var ans1 = wrap(ans);
-  luck += 100;
-  luck %= 72;
-  var ansFinal = sample[luck];
-  for (int i = 1; i < 12; i++) {
-    ansFinal += sample[ansFinal[i - 1].codeUnitAt(0) % 72];
-  }
-  for (int i = 0; i < ans1.length; i++) {
-    ansFinal = add(ansFinal, ans1[i]);
-  }
-  luck += pass.length + ans1.length * pass.length;
-  luck %= 72;
-  String char1 = sample[(luck % 26) + 26] + sample[((luck + 111) % 10) + 52];
-  String char3 = sample[((luck + 222) % 10) + 62] + sample[(luck + 300) % 26];
-  luck = (pass.length * luck) % ansFinal.length;
-  ansFinal = ansFinal.substring(0, luck) +
-      char1 +
-      ansFinal.substring(luck, ansFinal.length);
-  luck += pass.length + ans1.length;
-  luck %= ansFinal.length;
-  ansFinal = ansFinal.substring(0, luck) +
-      char3 +
-      ansFinal.substring(luck, ansFinal.length);
-  return ansFinal;
 }
