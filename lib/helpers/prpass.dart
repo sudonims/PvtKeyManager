@@ -430,7 +430,7 @@ String add(String a, String b) {
 }
 
 class PRPass {
-  PRPass({required this.secret, required this.lucky});
+  PRPass({String this.secret, String this.lucky});
   final String secret;
   final String lucky;
 

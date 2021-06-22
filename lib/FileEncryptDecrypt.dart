@@ -5,9 +5,9 @@ import 'dart:convert';
 import './helpers/prpass.dart';
 
 class Encryptor {
-  late String _path;
-  late String _lucky;
-  late String _secret;
+  String _path;
+  String _lucky;
+  String _secret;
 
   set path(String path) {
     this._path = path;
@@ -27,7 +27,7 @@ class Encryptor {
   }
 
   void encrypt() {
-    var crypt = new AesCrypt();
+    AesCrypt crypt = new AesCrypt();
     Uint8List key = Uint8List.fromList(utf8.encode(this.generateSecret()));
     crypt.aesSetKeys(key, key);
     crypt.setPassword(this.generateSecret());
@@ -36,7 +36,11 @@ class Encryptor {
 }
 
 class Decryptor {
-  Decryptor({required this.path, required this.lucky, required this.secret});
+  Decryptor({String path, int lucky, String secret}) {
+    this.path = path;
+    this.lucky = lucky;
+    this.secret = secret;
+  }
   String path;
   int lucky;
   String secret;

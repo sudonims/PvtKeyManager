@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:crypto_key_manager/FileEncryptDecrypt.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +34,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key key, String this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -58,6 +63,28 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  // FileTileSelectMode filePickerSelectMode = FileTileSelectMode.checkButton;
+  Future<String> openFile(BuildContext context) async {
+    FilePickerResult res = await FilePicker.platform.pickFiles();
+    if (res != null)
+      return res.files.single.path.toString();
+    else
+      return "";
+    // String path = await FilesystemPicker.open(
+    //   title: 'Open file',
+    //   context: context,
+    //   rootDirectory: await getTemporaryDirectory(),
+    //   fsType: FilesystemType.file,
+    //   folderIconColor: Colors.teal,
+    //   allowedExtensions: ['.txt'],
+    //   fileTileSelectMode: filePickerSelectMode,
+    //   // requestPermission: () async =>
+    //   //     await Permission.storage.request().isGranted,
+    // );
+
+    // return path;
   }
 
   @override
@@ -102,13 +129,12 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             TextButton(
-                onPressed: () {
+                onPressed: () async {
                   print("lol");
-                  var enc = new Encryptor();
+                  Encryptor enc = new Encryptor();
                   enc.lucky = "12";
                   enc.secret = "nim";
-                  enc.path =
-                      "/home/sudonims/Documents/Crytpo Private Key Manager/lib/testFile.txt";
+                  enc.path = await openFile(context);
                   enc.encrypt();
                 },
                 child: Text("Click"))
