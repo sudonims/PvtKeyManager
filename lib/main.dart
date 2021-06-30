@@ -1,11 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:crypto_key_manager/helpers/FileEncryptDecrypt.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:crypto_key_manager/components/Home.dart';
 
 void main() {
   runApp(PvtKeyManager());
@@ -20,74 +14,29 @@ class PvtKeyManager extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Private Key Manager'),
+      home: MainPage(
+        currentPage: Home(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({this.currentPage});
 
-  final String title;
+  final Widget currentPage;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  Future<String> openFile(BuildContext context) async {
-    FilePickerResult res = await FilePicker.platform.pickFiles();
-    if (res != null)
-      return res.files.single.path.toString();
-    else
-      return "";
-  }
-
+class MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton(
-                  onPressed: () async {
-                    print("lol");
-                  },
-                  child: Text("Import")),
-              TextButton(onPressed: () async {}, child: Text("Create New")),
-              TextButton(
-                  onPressed: () {
-                    PrivateKeys keys = new PrivateKeys();
-                    keys.lastModified = DateTime.now();
-                    // PrivateKey key = ;
-                    keys.keys = [
-                      PrivateKey.fromJSON({
-                        "name": "Binance",
-                        "secrets": ["lol", "lol1"]
-                      })
-                    ];
-                    keys.addKey = PrivateKey.fromJSON({
-                      "name": "Binance",
-                      "secrets": ["lol", "lol1aaaaa"]
-                    });
-                    var a = keys.toJSON();
-
-                    print(a);
-
-                    PrivateKeys keysC = PrivateKeys.fromJSON(a);
-                    keysC.addKey = PrivateKey.fromJSON({
-                      "name": "X",
-                      "secrets": ["lulz"]
-                    });
-                    print(keysC.toJSON());
-                  },
-                  child: Text("Lol"))
-            ],
-          ),
-        ));
+      appBar: AppBar(
+        title: Text("Private Key Manager"),
+      ),
+      body: Center(child: widget.currentPage),
+    );
   }
 }

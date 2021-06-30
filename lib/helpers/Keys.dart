@@ -38,6 +38,14 @@ class PrivateKeys {
     this._keys.add(key);
   }
 
+  List<PrivateKey> get getKeys {
+    return this._keys;
+  }
+
+  DateTime get getLastModified {
+    return this._lastModified;
+  }
+
   PrivateKeys();
 
   PrivateKeys.fromJSON(Map<String, dynamic> input) {
