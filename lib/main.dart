@@ -2,6 +2,7 @@ import 'package:crypto_key_manager/components/KeysShow.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_key_manager/components/Home.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(PvtKeyManager());
@@ -11,17 +12,22 @@ class PvtKeyManager extends StatelessWidget {
   PrivateKeys populate() {
     PrivateKeys keys = new PrivateKeys();
     keys.lastModified = DateTime.now();
-    // PrivateKey key = ;
-    keys.keys = [
-      PrivateKey.fromJSON({
-        "name": "Binance",
-        "secrets": ["lol", "lol1"]
-      })
-    ];
-    keys.addKey = PrivateKey.fromJSON({
+    PrivateKey key = PrivateKey.fromJSON({
+      "name": "Binance",
+      "secrets": ["lol", "lol1"]
+    });
+    key.id = "0001";
+
+    keys.keys = [key];
+
+    key = null;
+    key = PrivateKey.fromJSON({
       "name": "Binance",
       "secrets": ["lol", "lol1aaaaa"]
     });
+    key.id = "0002";
+
+    keys.addKey = key;
     return keys;
   }
 
@@ -32,11 +38,15 @@ class PvtKeyManager extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainPage(
-        currentPage: KeysShow(
-          keys: populate(),
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainPage(
+              currentPage: Home(),
+            ),
+        '/keys': (context) => MainPage(
+              currentPage: KeysShow(keys: populate()),
+            )
+      },
     );
   }
 }

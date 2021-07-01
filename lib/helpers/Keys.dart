@@ -1,6 +1,11 @@
 class PrivateKey {
+  String _id;
   String _name;
   List<String> _secrets;
+
+  set id(String id) {
+    this._id = id;
+  }
 
   set name(String name) {
     this._name = name;
@@ -14,6 +19,10 @@ class PrivateKey {
     this._secrets.add(secret);
   }
 
+  get getId {
+    return this._id;
+  }
+
   get getName {
     return this._name;
   }
@@ -23,11 +32,12 @@ class PrivateKey {
   }
 
   PrivateKey.fromJSON(Map<String, dynamic> input)
-      : this._name = input['name'],
+      : this._id = input['id'],
+        this._name = input['name'],
         this._secrets = input['secrets'];
 
   Map<String, dynamic> toJSON() =>
-      {'name': this._name, 'secrets': this._secrets};
+      {'id': this._id, 'name': this._name, 'secrets': this._secrets};
 }
 
 class PrivateKeys {

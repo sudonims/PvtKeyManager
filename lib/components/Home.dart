@@ -28,7 +28,11 @@ class _MyHomePageState extends State<Home> {
               print("lol");
             },
             child: Text("Import")),
-        TextButton(onPressed: () async {}, child: Text("Create New")),
+        TextButton(
+            onPressed: () async {
+              Navigator.pushNamed(context, '/keys');
+            },
+            child: Text("Create New")),
         TextButton(
             onPressed: () {
               PrivateKeys keys = new PrivateKeys();

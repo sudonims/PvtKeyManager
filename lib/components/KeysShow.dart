@@ -10,6 +10,8 @@ class KeysShow extends StatefulWidget {
 }
 
 class KeysShowState extends State<KeysShow> {
+  void onDelete(String id) {}
+
   @override
   Widget build(BuildContext context) {
     return new ListView(
@@ -20,24 +22,14 @@ class KeysShowState extends State<KeysShow> {
                 ListTile(
                   title: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                          onPressed: () {
-                            print("Go Back");
-                          },
-                          icon: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            size: 20.0,
-                            color: Colors.black,
-                          ))
-                    ],
+                    children: <Widget>[],
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextButton(
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.fromLTRB(15, 20, 10, 0),
+                            padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
                           ),
                           onPressed: () {
                             print("Export");
@@ -51,6 +43,28 @@ class KeysShowState extends State<KeysShow> {
                                 ),
                                 Icon(
                                   Icons.import_export,
+                                  size: 20.0,
+                                  color: Colors.green,
+                                )
+                              ])
+                            ],
+                          )),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+                          ),
+                          onPressed: () {
+                            print("Add");
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Row(children: <Widget>[
+                                Text(
+                                  "Add ",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                Icon(
+                                  Icons.add_box_rounded,
                                   size: 20.0,
                                   color: Colors.green,
                                 )
@@ -79,7 +93,7 @@ class KeysShowState extends State<KeysShow> {
                           children: <Widget>[
                             IconButton(
                                 onPressed: () {
-                                  print("Icon Delete Pressed");
+                                  print("Icon Delete Pressed " + key.getId);
                                 },
                                 icon: Icon(
                                   Icons.delete_forever_outlined,
