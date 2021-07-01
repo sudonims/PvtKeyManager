@@ -14,6 +14,14 @@ class PrivateKey {
     this._secrets.add(secret);
   }
 
+  get getName {
+    return this._name;
+  }
+
+  get getSecrets {
+    return this._secrets;
+  }
+
   PrivateKey.fromJSON(Map<String, dynamic> input)
       : this._name = input['name'],
         this._secrets = input['secrets'];
