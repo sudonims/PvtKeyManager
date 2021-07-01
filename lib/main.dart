@@ -8,8 +8,6 @@ void main() {
 }
 
 class PvtKeyManager extends StatelessWidget {
-  // This widget is the root of your application.
-
   PrivateKeys populate() {
     PrivateKeys keys = new PrivateKeys();
     keys.lastModified = DateTime.now();
@@ -52,12 +50,6 @@ class MainPage extends StatefulWidget {
 }
 
 class MainPageState extends State<MainPage> {
-  // func() {
-  //   setState(() {
-  //     widget.currentPage = Widget();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
