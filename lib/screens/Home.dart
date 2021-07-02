@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:file_picker/file_picker.dart';
@@ -49,10 +51,10 @@ class _MyHomePageState extends State<Home> {
                 "secrets": ["lol", "lol1aaaaa"]
               });
               var a = keys.toJSON();
-
-              print(a);
-
-              PrivateKeys keysC = PrivateKeys.fromJSON(a);
+              var b = jsonEncode(a);
+              print(b);
+              print(b.runtimeType);
+              PrivateKeys keysC = PrivateKeys.fromJSON(jsonDecode(b));
               keysC.addKey = PrivateKey.fromJSON({
                 "name": "X",
                 "secrets": ["lulz"]

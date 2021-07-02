@@ -19,6 +19,10 @@ class PrivateKey {
     this._secrets.add(secret);
   }
 
+  set removeSecret(String secret) {
+    this._secrets.remove(secret);
+  }
+
   get getId {
     return this._id;
   }
@@ -34,10 +38,11 @@ class PrivateKey {
   PrivateKey.fromJSON(Map<String, dynamic> input)
       : this._id = input['id'],
         this._name = input['name'],
-        this._secrets = input['secrets'];
+        this._secrets =
+            input['secrets'].map<String>((sec) => sec.toString()).toList();
 
   Map<String, dynamic> toJSON() =>
-      {'id': this._id, 'name': this._name, 'secrets': this._secrets};
+      {'id': this._id, 'name': this._name, 'secrets': this._secrets.toList()};
 }
 
 class PrivateKeys {
@@ -56,6 +61,15 @@ class PrivateKeys {
     this._keys.add(key);
   }
 
+  set removeKey(PrivateKey key) {
+    this._keys.remove(key);
+  }
+
+  set updateKey(PrivateKey key) {
+    this._keys.removeWhere((element) => element.getId == key.getId);
+    this._keys.add(key);
+  }
+
   List<PrivateKey> get getKeys {
     return this._keys;
   }
@@ -67,14 +81,14 @@ class PrivateKeys {
   PrivateKeys();
 
   PrivateKeys.fromJSON(Map<String, dynamic> input) {
-    this._lastModified = input['lastModified'];
+    this._lastModified = DateTime.parse(input['lastModified']);
     this._keys = input['keys']
         .map<PrivateKey>((key) => PrivateKey.fromJSON(key))
         .toList();
   }
 
   Map<String, dynamic> toJSON() => {
-        "lastModified": this._lastModified,
+        "lastModified": this._lastModified.toString(),
         "keys": this._keys.map((key) => key.toJSON()).toList()
       };
 }

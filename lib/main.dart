@@ -1,7 +1,7 @@
-import 'package:crypto_key_manager/components/KeysShow.dart';
+import 'package:crypto_key_manager/screens/KeysShow.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_key_manager/components/Home.dart';
+import 'package:crypto_key_manager/screens/Home.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -45,7 +45,8 @@ class PvtKeyManager extends StatelessWidget {
             ),
         '/keys': (context) => MainPage(
               currentPage: KeysShow(keys: populate()),
-            )
+            ),
+        // 'key/:id': (context) =>
       },
     );
   }
