@@ -10,4 +10,24 @@ class PrivateKeysModel extends ChangeNotifier {
   }
 
   PrivateKeys get getKeys => this._keys;
+
+  set addKey(PrivateKey key) {
+    this._keys.addKey = key;
+    notifyListeners();
+  }
+
+  set removeKey(PrivateKey key) {
+    this._keys.removeKey = key;
+    notifyListeners();
+  }
+
+  set updateKey(PrivateKey key) {
+    this._keys.updateKey = key;
+    notifyListeners();
+  }
+
+  set updateLastModified(DateTime time) {
+    this._keys.lastModified = time;
+    notifyListeners();
+  }
 }

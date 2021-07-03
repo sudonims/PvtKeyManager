@@ -20,7 +20,7 @@ class PrivateKey {
   }
 
   set removeSecret(String secret) {
-    this._secrets.remove(secret);
+    this._secrets.removeWhere((element) => element == secret);
   }
 
   get getId {
@@ -62,7 +62,7 @@ class PrivateKeys {
   }
 
   set removeKey(PrivateKey key) {
-    this._keys.remove(key);
+    this._keys.removeWhere((element) => element.getId == key.getId);
   }
 
   set updateKey(PrivateKey key) {

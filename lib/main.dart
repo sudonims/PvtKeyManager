@@ -1,3 +1,4 @@
+import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
 import 'package:crypto_key_manager/screens/KeysShow.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:flutter/material.dart';
@@ -33,22 +34,28 @@ class PvtKeyManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Private Key Manager',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MainPage(
-              currentPage: Home(),
+    return ChangeNotifierProvider(
+        create: (context) => PrivateKeysModel(),
+        child:
+            Consumer<PrivateKeysModel>(builder: (context, privateKeys, child) {
+          privateKeys.keys = populate();
+          return MaterialApp(
+            title: 'Private Key Manager',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
             ),
-        '/keys': (context) => MainPage(
-              currentPage: KeysShow(keys: populate()),
-            ),
-        // 'key/:id': (context) =>
-      },
-    );
+            initialRoute: '/',
+            routes: {
+              '/': (context) => MainPage(
+                    currentPage: Home(),
+                  ),
+              '/keys': (context) => MainPage(
+                    currentPage: KeysShow(keys: privateKeys.getKeys),
+                  ),
+              // 'key/:id': (context) =>
+            },
+          );
+        }));
   }
 }
 
