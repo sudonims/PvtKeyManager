@@ -1,9 +1,11 @@
+import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
+import 'package:provider/provider.dart';
 
 class KeysShow extends StatefulWidget {
-  KeysShow({@required this.keys});
-  final PrivateKeys keys;
+  KeysShow();
+  // final PrivateKeys keys;
 
   @override
   KeysShowState createState() => KeysShowState();
@@ -14,6 +16,7 @@ class KeysShowState extends State<KeysShow> {
 
   @override
   Widget build(BuildContext context) {
+    var PrivateKeysContext = context.watch<PrivateKeysModel>();
     return new ListView(
       padding: const EdgeInsets.all(8),
       children: [
@@ -54,7 +57,11 @@ class KeysShowState extends State<KeysShow> {
                             padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
                           ),
                           onPressed: () {
-                            print("Add");
+                            PrivateKeysContext.addKey = PrivateKey.fromJSON({
+                              'id': DateTime.now().toString(),
+                              'name': "Lol",
+                              'secrets': ["Lol1", "Lol2"]
+                            });
                           },
                           child: Column(
                             children: <Widget>[
@@ -77,7 +84,7 @@ class KeysShowState extends State<KeysShow> {
               ],
             )
           ] +
-          widget.keys.getKeys
+          PrivateKeysContext.getKeys.getKeys
               .map((key) => Column(
                     children: [
                       ListTile(
