@@ -3,6 +3,8 @@ class PrivateKey {
   String _name;
   List<String> _secrets;
 
+  PrivateKey();
+
   set id(String id) {
     this._id = id;
   }

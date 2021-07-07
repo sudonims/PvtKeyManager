@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_key_manager/helpers/Keys.dart';
@@ -56,13 +59,65 @@ class KeysShowState extends State<KeysShow> {
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
                           ),
-                          onPressed: () {
-                            PrivateKeysContext.addKey = PrivateKey.fromJSON({
-                              'id': DateTime.now().toString(),
-                              'name': "Lol",
-                              'secrets': ["Lol1", "Lol2"]
-                            });
-                          },
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                var name = TextEditingController();
+                                return AlertDialog(
+                                  title: Text("Add a New Key"),
+                                  content: Container(
+                                      height: 250,
+                                      width: 175,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              controller: name,
+                                              decoration: InputDecoration(
+                                                  hintText: "Name"),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                  actions: <Widget>[
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Cancel")),
+                                    TextButton(
+                                        onPressed: () {
+                                          try {
+                                            PrivateKey key = new PrivateKey();
+                                            key.name = name.text;
+                                            key.id = md5
+                                                .convert(utf8.encode(name.text +
+                                                    DateTime.now().toString()))
+                                                .toString();
+                                            PrivateKeysContext.addKey = key;
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text("Key added succefully"),
+                                              backgroundColor: Colors.blue,
+                                            ));
+                                          } catch (e) {
+                                            print(e);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text("Error Occured"),
+                                              backgroundColor: Colors.red,
+                                            ));
+                                          }
+                                        },
+                                        child: Text("Add"))
+                                  ],
+                                );
+                              }),
                           child: Column(
                             children: <Widget>[
                               Row(children: <Widget>[
@@ -101,6 +156,7 @@ class KeysShowState extends State<KeysShow> {
                             IconButton(
                                 onPressed: () {
                                   print("Icon Delete Pressed " + key.getId);
+                                  PrivateKeysContext.removeKey = key;
                                 },
                                 icon: Icon(
                                   Icons.delete_forever_outlined,
