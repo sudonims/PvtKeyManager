@@ -30,7 +30,6 @@ class PvtKeyManager extends StatelessWidget {
             '/secret': (context) => MainPage(
                   currentPage: PrivateKeyShow(),
                 ),
-            // 'key/:id': (context) =>
           },
         ));
   }

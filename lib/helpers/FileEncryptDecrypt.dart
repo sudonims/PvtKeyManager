@@ -59,7 +59,7 @@ class Decryptor {
     return prpass.generatePassword();
   }
 
-  void decrypt() async {
+  Future<String> decrypt() async {
     AesCrypt crypt = new AesCrypt();
     String secret = this.generateSecret();
     Uint8List key = Uint8List.fromList(utf8.encode(secret));
@@ -68,7 +68,7 @@ class Decryptor {
     crypt.aesSetKeys(key, iv);
     crypt.setPassword(secret);
     Uint8List decrypted = await crypt.decryptDataFromFile(this._path);
-    var data = decrypted.toString();
-    print(data);
+    var data = String.fromCharCodes(decrypted);
+    return data;
   }
 }
