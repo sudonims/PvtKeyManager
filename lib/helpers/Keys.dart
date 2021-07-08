@@ -3,7 +3,9 @@ class PrivateKey {
   String _name;
   List<String> _secrets;
 
-  PrivateKey();
+  PrivateKey() {
+    this._secrets = [];
+  }
 
   set id(String id) {
     this._id = id;
@@ -44,7 +46,7 @@ class PrivateKey {
             input['secrets'].map<String>((sec) => sec.toString()).toList();
 
   Map<String, dynamic> toJSON() =>
-      {'id': this._id, 'name': this._name, 'secrets': this._secrets.toList()};
+      {'id': this._id, 'name': this._name, 'secrets': this._secrets};
 }
 
 class PrivateKeys {
@@ -80,7 +82,10 @@ class PrivateKeys {
     return this._lastModified;
   }
 
-  PrivateKeys();
+  PrivateKeys() {
+    this._keys = [];
+    this._lastModified = DateTime.now();
+  }
 
   PrivateKeys.fromJSON(Map<String, dynamic> input) {
     this._lastModified = DateTime.parse(input['lastModified']);

@@ -25,12 +25,15 @@ class Encryptor {
     return prpass.generatePassword();
   }
 
-  void encrypt() {
+  void encrypt(String data) {
     AesCrypt crypt = new AesCrypt();
-    Uint8List key = Uint8List.fromList(utf8.encode(this.generateSecret()));
-    crypt.aesSetKeys(key, key);
-    crypt.setPassword(this.generateSecret());
-    crypt.encryptFile(this._path, "enc.enc");
+    String secret = this.generateSecret();
+    Uint8List key = Uint8List.fromList(utf8.encode(secret));
+    Uint8List iv = Uint8List.fromList(utf8.encode(
+        PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
+    crypt.aesSetKeys(key, iv);
+    crypt.setPassword(secret);
+    crypt.encryptDataToFile(Uint8List.fromList(utf8.encode(data)), this._path);
   }
 }
 
@@ -58,13 +61,14 @@ class Decryptor {
 
   void decrypt() async {
     AesCrypt crypt = new AesCrypt();
-    Uint8List key = Uint8List.fromList(utf8.encode(this.generateSecret()));
-    crypt.aesSetKeys(key, key);
-    crypt.setPassword(this.generateSecret());
+    String secret = this.generateSecret();
+    Uint8List key = Uint8List.fromList(utf8.encode(secret));
+    Uint8List iv = Uint8List.fromList(utf8.encode(
+        PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
+    crypt.aesSetKeys(key, iv);
+    crypt.setPassword(secret);
     Uint8List decrypted = await crypt.decryptDataFromFile(this._path);
-
     var data = decrypted.toString();
-
     print(data);
   }
 }

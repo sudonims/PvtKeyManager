@@ -27,7 +27,7 @@ class PrivateKeysModel extends ChangeNotifier {
   PrivateKeys _keys;
 
   PrivateKeysModel() {
-    this._keys = populate();
+    this._keys = new PrivateKeys();
   }
 
   set keys(PrivateKeys keys) {

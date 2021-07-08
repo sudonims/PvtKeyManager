@@ -1,6 +1,6 @@
 import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
 import 'package:crypto_key_manager/screens/KeysShow.dart';
-import 'package:crypto_key_manager/helpers/Keys.dart';
+import 'package:crypto_key_manager/screens/PrivateKeyShow.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_key_manager/screens/Home.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +26,9 @@ class PvtKeyManager extends StatelessWidget {
                 ),
             '/keys': (context) => MainPage(
                   currentPage: KeysShow(),
+                ),
+            '/secret': (context) => MainPage(
+                  currentPage: PrivateKeyShow(),
                 ),
             // 'key/:id': (context) =>
           },
