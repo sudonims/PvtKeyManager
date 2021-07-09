@@ -84,17 +84,20 @@ class _MyHomePageState extends State<Home> {
                             String filePath = await openFile(context);
                             String dec = await decryptedData(
                                 filePath, lucky.text, word.text);
-                            print(dec);
+                            // print(dec);
+                            if (dec == "e") {
+                              throw new Exception("Error");
+                            }
                             var jsonData = jsonDecode(dec);
-                            print(jsonData);
+                            // print(jsonData);
                             PrivateKeys keys = PrivateKeys.fromJSON(jsonData);
                             privateKeysContext.keys = keys;
                             Navigator.pushNamed(context, "/keys");
                           } catch (e) {
-                            print(e);
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Error Occured"),
+                              content:
+                                  Text("Error Occured. Check password or File"),
                               backgroundColor: Colors.red,
                             ));
                           }

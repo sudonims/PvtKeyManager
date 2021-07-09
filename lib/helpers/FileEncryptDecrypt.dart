@@ -60,15 +60,21 @@ class Decryptor {
   }
 
   Future<String> decrypt() async {
-    AesCrypt crypt = new AesCrypt();
-    String secret = this.generateSecret();
-    Uint8List key = Uint8List.fromList(utf8.encode(secret));
-    Uint8List iv = Uint8List.fromList(utf8.encode(
-        PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
-    crypt.aesSetKeys(key, iv);
-    crypt.setPassword(secret);
-    Uint8List decrypted = await crypt.decryptDataFromFile(this._path);
-    var data = String.fromCharCodes(decrypted);
-    return data;
+    try {
+      AesCrypt crypt = new AesCrypt();
+      String secret = this.generateSecret();
+      Uint8List key = Uint8List.fromList(utf8.encode(secret));
+      Uint8List iv = Uint8List.fromList(utf8.encode(
+          PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
+      crypt.aesSetKeys(key, iv);
+      crypt.setPassword(secret);
+      Uint8List decrypted = await crypt.decryptDataFromFile(this._path);
+      var data = String.fromCharCodes(decrypted);
+      return data;
+    } on AesCryptDataException catch (e) {
+      // print(e.type);
+      print(e.message);
+      return "e";
+    }
   }
 }

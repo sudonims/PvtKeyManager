@@ -4,7 +4,7 @@ class PrivateKey {
   List<String> _secrets;
 
   PrivateKey() {
-    this._secrets = [];
+    this._secrets = <String>[];
   }
 
   set id(String id) {
@@ -27,15 +27,15 @@ class PrivateKey {
     this._secrets.removeWhere((element) => element == secret);
   }
 
-  get getId {
+  String get getId {
     return this._id;
   }
 
-  get getName {
+  String get getName {
     return this._name;
   }
 
-  get getSecrets {
+  List<String> get getSecrets {
     return this._secrets;
   }
 
@@ -83,7 +83,7 @@ class PrivateKeys {
   }
 
   PrivateKeys() {
-    this._keys = [];
+    this._keys = <PrivateKey>[];
     this._lastModified = DateTime.now();
   }
 
