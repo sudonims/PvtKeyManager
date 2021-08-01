@@ -14,26 +14,29 @@ class PrivateKeyShowState extends State<PrivateKeyShow> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    print(args);
 
     PrivateKey key = args['privateKey'];
 
     var privateKeysModel = context.watch<PrivateKeysModel>();
-
-    return Container(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      key.getName,
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
-                    ),
-                    TextButton(
+    // return Text("data");
+    return new ListView(
+      padding: const EdgeInsets.all(8),
+      children: [
+            Column(
+              children: [
+                ListTile(
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // Text(
+                      //   key.getName,
+                      //   style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                      // ),
+                      TextButton(
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                         ),
@@ -68,18 +71,17 @@ class PrivateKeyShowState extends State<PrivateKeyShow> {
                                   TextButton(
                                       onPressed: () {
                                         try {
-                                          setState(() {
-                                            key.addSecret = secret.text;
-                                          });
+                                          key.addSecret = secret.text;
+                                          privateKeysModel.updateKey = key;
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             content:
-                                                Text("Key added succefully"),
+                                                Text("Secret added succefully"),
                                             backgroundColor: Colors.blue,
                                           ));
                                         } catch (e) {
-                                          print(e);
+                                          // print(e);
                                           Navigator.pop(context);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
@@ -106,20 +108,44 @@ class PrivateKeyShowState extends State<PrivateKeyShow> {
                               )
                             ])
                           ],
-                        ))
-                  ],
+                        ),
+                      )
+                    ],
+                  ),
                 )
-              ] +
-              key.getSecrets
-                  .map((secret) => Row(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(secret),
-                            trailing: Text("de"),
-                          )
-                        ],
-                      ))
-                  .toList(),
-        ));
+              ],
+            )
+          ] +
+          key.getSecrets
+              .map((singleSecret) => Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(singleSecret),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                                onPressed: () {
+                                  key.removeSecret = singleSecret;
+                                  privateKeysModel.updateKey = key;
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content:
+                                        Text("Secret Removed Successfully"),
+                                    backgroundColor: Colors.green,
+                                  ));
+                                },
+                                icon: Icon(
+                                  Icons.delete_forever_outlined,
+                                  size: 20.0,
+                                  color: Colors.red,
+                                )),
+                          ],
+                        ),
+                      )
+                    ],
+                  ))
+              .toList(),
+    );
   }
 }
