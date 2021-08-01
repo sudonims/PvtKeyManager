@@ -17,11 +17,12 @@ class KeysShow extends StatefulWidget {
 }
 
 class KeysShowState extends State<KeysShow> {
-  Future<bool> export(PrivateKeys keys, String lucky, String word) async {
+  Future<bool> export(
+      PrivateKeys keys, String lucky, String word, String fileName) async {
     try {
       var finalJSON = jsonEncode(keys.toJSON());
       var outputDirectory = await FilePicker.platform.getDirectoryPath();
-      var outputPath = p.join(outputDirectory, "secrets.enc");
+      var outputPath = p.join(outputDirectory, fileName);
 
       Encryptor e = new Encryptor();
       e.lucky = lucky;
@@ -60,6 +61,7 @@ class KeysShowState extends State<KeysShow> {
                               builder: (BuildContext context) {
                                 var lucky = TextEditingController();
                                 var word = TextEditingController();
+                                var fileName = TextEditingController();
                                 return AlertDialog(
                                   title: Text(
                                       "PR-Pass - Used as a step to encrypt file"),
@@ -87,6 +89,15 @@ class KeysShowState extends State<KeysShow> {
                                                   hintText: "Word"),
                                             ),
                                           ),
+                                          Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: TextFormField(
+                                              keyboardType: TextInputType.text,
+                                              controller: fileName,
+                                              decoration: InputDecoration(
+                                                  hintText: "Output File Name"),
+                                            ),
+                                          ),
                                         ],
                                       )),
                                   actions: <Widget>[
@@ -101,13 +112,14 @@ class KeysShowState extends State<KeysShow> {
                                             bool success = await export(
                                                 privateKeysContext.getKeys,
                                                 lucky.text,
-                                                word.text);
+                                                word.text,
+                                                fileName.text);
                                             if (success) {
                                               Navigator.pop(context);
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    "secrets.enc saved successfully"),
+                                                content: Text(fileName.text +
+                                                    " saved successfully"),
                                                 backgroundColor: Colors.green,
                                               ));
                                             } else {
