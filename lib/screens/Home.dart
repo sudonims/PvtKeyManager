@@ -68,6 +68,7 @@ class _MyHomePageState extends State<Home> {
                               keyboardType: TextInputType.text,
                               controller: word,
                               decoration: InputDecoration(hintText: "Word"),
+                              obscureText: true,
                             ),
                           ),
                         ],
@@ -113,33 +114,6 @@ class _MyHomePageState extends State<Home> {
               Navigator.pushNamed(context, '/keys');
             },
             child: Text("Create New")),
-        TextButton(
-            onPressed: () {
-              PrivateKeys keys = new PrivateKeys();
-              keys.lastModified = DateTime.now();
-              // PrivateKey key = ;
-              keys.keys = [
-                PrivateKey.fromJSON({
-                  "name": "Binance",
-                  "secrets": ["lol", "lol1"]
-                })
-              ];
-              keys.addKey = PrivateKey.fromJSON({
-                "name": "Binance",
-                "secrets": ["lol", "lol1aaaaa"]
-              });
-              var a = keys.toJSON();
-              var b = jsonEncode(a);
-              print(b);
-              print(b.runtimeType);
-              PrivateKeys keysC = PrivateKeys.fromJSON(jsonDecode(b));
-              keysC.addKey = PrivateKey.fromJSON({
-                "name": "X",
-                "secrets": ["lulz"]
-              });
-              print(keysC.toJSON());
-            },
-            child: Text("Lol"))
       ],
     );
   }

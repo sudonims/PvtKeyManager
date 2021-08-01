@@ -2,6 +2,7 @@ import 'package:crypto_key_manager/helpers/Keys.dart';
 import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:clipboard/clipboard.dart';
 
 class PrivateKeyShow extends StatefulWidget {
   PrivateKeyShow();
@@ -124,6 +125,20 @@ class PrivateKeyShowState extends State<PrivateKeyShow> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            IconButton(
+                                onPressed: () {
+                                  FlutterClipboard.copy(singleSecret)
+                                      .then((value) => {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "Secret Copied Successfully"),
+                                              backgroundColor: Colors.green,
+                                            ))
+                                          });
+                                },
+                                icon: Icon(Icons.copy_outlined,
+                                    size: 20.0, color: Colors.green)),
                             IconButton(
                                 onPressed: () {
                                   key.removeSecret = singleSecret;
