@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:crypto_key_manager/helpers/FileEncryptDecrypt.dart';
+import 'package:private_key_manager/helpers/FileEncryptDecrypt.dart';
 import 'package:path/path.dart' as p;
 import 'package:crypto/crypto.dart';
-import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
+import 'package:private_key_manager/models/PrivateKeysModel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_key_manager/helpers/Keys.dart';
+import 'package:private_key_manager/helpers/Keys.dart';
 import 'package:provider/provider.dart';
 
 class KeysShow extends StatefulWidget {
@@ -83,6 +83,7 @@ class KeysShowState extends State<KeysShow> {
                                           Padding(
                                             padding: EdgeInsets.all(8.0),
                                             child: TextFormField(
+                                              obscureText: true,
                                               keyboardType: TextInputType.text,
                                               controller: word,
                                               decoration: InputDecoration(

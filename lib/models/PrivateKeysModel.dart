@@ -1,4 +1,4 @@
-import 'package:crypto_key_manager/helpers/Keys.dart';
+import 'package:private_key_manager/helpers/Keys.dart';
 import 'package:flutter/material.dart';
 
 PrivateKeys populate() {

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:crypto_key_manager/models/PrivateKeysModel.dart';
+import 'package:private_key_manager/models/PrivateKeysModel.dart';
 import 'package:provider/provider.dart';
-import 'package:crypto_key_manager/helpers/FileEncryptDecrypt.dart';
+import 'package:private_key_manager/helpers/FileEncryptDecrypt.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_key_manager/helpers/Keys.dart';
+import 'package:private_key_manager/helpers/Keys.dart';
 import 'package:file_picker/file_picker.dart';
 
 class Home extends StatefulWidget {
