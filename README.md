@@ -59,7 +59,7 @@ You can use it as you would any normal package, just open it and you are good to
 2. Windows users need to extract the .7z file and run exe file directly. Note that rest files are needed from archive in order for the exe to work.
 
 ## Usage
-
+ 
 ![Guide](guide.gif)
 
 ## Contributing
