@@ -16,7 +16,8 @@ class Home extends StatefulWidget {
 
 class _MyHomePageState extends State<Home> {
   Future<String> openFile(BuildContext context) async {
-    FilePickerResult res = await FilePicker.platform.pickFiles();
+    FilePickerResult res =
+        await FilePicker.platform.pickFiles(type: FileType.any);
     if (res != null)
       return res.files.single.path.toString();
     else

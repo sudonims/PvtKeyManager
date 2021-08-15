@@ -1,7 +1,7 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
-import 'package:aes_crypt/aes_crypt.dart';
 import 'prpass.dart';
 
 class Encryptor {
@@ -10,7 +10,7 @@ class Encryptor {
   String _secret;
 
   set path(String path) {
-    this._path = path;
+    this._path = path + ".enc";
   }
 
   set lucky(String lucky) {
@@ -27,41 +27,22 @@ class Encryptor {
   }
 
   void encrypt(String data) async {
-    // AesCtr algorithm = AesCtr.with128bits(macAlgorithm: MacAlgorithm.empty);
-    AesCrypt crypt = new AesCrypt();
+    AesCtr algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
 
     String secret = this.generateSecret();
     Uint8List key = Uint8List.fromList(utf8.encode(secret));
-    // SecretKey secretKey = await algorithm.newSecretKeyFromBytes(key);
+    SecretKey secretKey = await algorithm.newSecretKeyFromBytes(key);
 
     Uint8List iv = Uint8List.fromList(utf8.encode(
         PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
 
-    // SecretBox enc = await algorithm.encrypt(
-    //     Uint8List.fromList(utf8.encode(data)),
-    //     secretKey: secretKey,
-    //     nonce: iv);
+    SecretBox enc = await algorithm.encrypt(
+        Uint8List.fromList(utf8.encode(data)),
+        secretKey: secretKey,
+        nonce: iv);
 
-    crypt.aesSetKeys(key, iv);
-    crypt.setPassword(secret);
-
-    // final cipher = enc.cipherText;
-    // final mc = enc.mac.bytes;
-    // print(cipher);
-    // print(mc);
-    // print(String.fromCharCodes(mc));
-    // print(utf8.encode(String.fromCharCodes(cipher)));
-
-    // Mac mac = new Mac(utf8.encode(String.fromCharCodes(mc)));
-    // SecretBox encData = new SecretBox(
-    //     Uint8List.fromList(utf8.encode(String.fromCharCodes(cipher))),
-    //     nonce: iv);
-
-    // AesCtr algorithm1 = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
-    // List<int> dec = await algorithm1.decrypt(encData, secretKey: secretKey);
-
-    // print(dec.toString());
-    crypt.encryptDataToFile(Uint8List.fromList(utf8.encode(data)), this._path);
+    File file = new File(this._path);
+    file.writeAsBytesSync(enc.cipherText);
   }
 }
 
@@ -89,20 +70,29 @@ class Decryptor {
 
   Future<String> decrypt() async {
     try {
-      AesCrypt crypt = new AesCrypt();
+      File file = new File(this._path);
+      Uint8List fileData = file.readAsBytesSync();
+
+      AesCtr algorithm = AesCtr.with128bits(macAlgorithm: Hmac.sha256());
+
       String secret = this.generateSecret();
       Uint8List key = Uint8List.fromList(utf8.encode(secret));
+      SecretKey secretKey = await algorithm.newSecretKeyFromBytes(key);
+
       Uint8List iv = Uint8List.fromList(utf8.encode(
           PRPass(secret: secret, lucky: key[0].toString()).generatePassword()));
-      crypt.aesSetKeys(key, iv);
-      crypt.setPassword(secret);
-      Uint8List decrypted = await crypt.decryptDataFromFile(this._path);
-      var data = String.fromCharCodes(decrypted);
+
+      Mac mac =
+          await Hmac.sha256().calculateMac(fileData, secretKey: secretKey);
+
+      SecretBox encData = new SecretBox(fileData, nonce: iv, mac: mac);
+
+      List<int> dec = await algorithm.decrypt(encData, secretKey: secretKey);
+
+      String data = String.fromCharCodes(dec);
       return data;
-    } on AesCryptDataException catch (e) {
-      // print(e.type);
-      print(e.message);
-      return "e";
+    } on SecretBoxAuthenticationError catch (e) {
+      return "hmac_verify_fail";
     }
   }
 }

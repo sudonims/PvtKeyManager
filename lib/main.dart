@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:private_key_manager/models/PrivateKeysModel.dart';
 import 'package:private_key_manager/screens/KeysShow.dart';
 import 'package:private_key_manager/screens/PrivateKeyShow.dart';
-import 'package:flutter/material.dart';
 import 'package:private_key_manager/screens/Home.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(PvtKeyManager());
