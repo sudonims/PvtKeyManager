@@ -1,4 +1,4 @@
-module crypto_key_manager/go
+module github.com/sudonims/PvtKeyManager/go
 
 go 1.16
 

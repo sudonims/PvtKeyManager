@@ -1,7 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.crypto_key_manager">
+    package="com.example.pvt_key_manager">
+   
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
    <application
-        android:label="crypto_key_manager"
+        android:requestLegacyExternalStorage="true"
+        android:label="pvt_key_manager"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

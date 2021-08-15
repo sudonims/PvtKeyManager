@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:private_key_manager/models/PrivateKeysModel.dart';
 import 'package:provider/provider.dart';
-import 'package:private_key_manager/helpers/FileEncryptDecrypt.dart';
 import 'package:flutter/material.dart';
-import 'package:private_key_manager/helpers/Keys.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:private_key_manager/helpers/Keys.dart';
+import 'package:private_key_manager/models/PrivateKeysModel.dart';
+import 'package:private_key_manager/helpers/FileEncryptDecrypt.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -33,9 +34,24 @@ class _MyHomePageState extends State<Home> {
     return dec;
   }
 
+  Future<bool> checkPermission() async {
+    final status = await Permission.storage.status;
+    if (status != PermissionStatus.granted) {
+      final result = await Permission.storage.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     var privateKeysContext = context.watch<PrivateKeysModel>();
+
+    checkPermission();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
