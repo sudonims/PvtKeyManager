@@ -3,7 +3,7 @@
   <h3 align="center">Key Hodl</h3>
 
   <p align="center">
-    Easy Private Key Manaher
+    Easy Private Key Manager
     <br />
     <br />
   </p>
